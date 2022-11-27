@@ -10,8 +10,7 @@ class KafkaConsumerThread(Thread):
     __instance = None
 
     def __init__(self, thread_status=False):
-        """ Constructor.
-        """
+        """ Constructor"""
         Thread.__init__(self)
         self.is_thread_alive = thread_status
         self.consumer = KafkaConsumer('sample', bootstrap_servers=['localhost:9092'],

@@ -10,8 +10,7 @@ class KafkaProducerThread(Thread):
     __instance = None
 
     def __init__(self, thread_status=False):
-        """ Constructor.
-        """
+        """ Constructor"""
         Thread.__init__(self)
         self.is_thread_alive = thread_status
         self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda x: dumps(x).encode('utf-8'))
