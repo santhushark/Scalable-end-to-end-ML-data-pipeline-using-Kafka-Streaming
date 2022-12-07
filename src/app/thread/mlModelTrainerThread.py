@@ -1,5 +1,4 @@
 import logging as log
-import time
 from threading import Thread
 from pyspark.sql import *
 from pyspark.ml.feature import VectorAssembler
@@ -17,6 +16,8 @@ class MLModelTrainerThread(Thread):
         self.is_thread_alive = thread_status
         self.spark_session = None
         self.test_df = None
+        self.is_model_trained = False
+        self.new_model_available = False
 
         if MLModelTrainerThread.__instance is None:
             MLModelTrainerThread.__instance = self
@@ -29,6 +30,7 @@ class MLModelTrainerThread(Thread):
         """ Static access method. """
         if MLModelTrainerThread.__instance is None:
             MLModelTrainerThread()
+
         return MLModelTrainerThread.__instance
 
     def run(self):
@@ -45,9 +47,13 @@ class MLModelTrainerThread(Thread):
                 self.test_df = splits[1]
                 lr = LinearRegression(featuresCol='features', labelCol='medv', maxIter=10, regParam=0.3, elasticNetParam=0.8)
                 lr_model = lr.fit(train_df)
-                lr_model.save("/home/hadoop/model")
+                lr_model.write().overwrite().save("/home/hadoop/Scalable-end-to-end-ML-data-pipeline/MLmodel/model")
                 if self.is_mv_dataset_within_hdfs_success("/dataset/boston.csv", "/dataset/trained/"+"boston"+str(int(time.time()))+".csv"):
-                    print("Model Training Complete")
+                    print("Model Training: FAILURE")
+                else:
+                    self.is_model_trained = True
+                    self.new_model_available = True
+                    print("Model Training: SUCCESS")
             time.sleep(10)
             self.is_thread_alive = True
 

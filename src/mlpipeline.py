@@ -5,20 +5,20 @@ from app.thread.mlModelTrainerThread import MLModelTrainerThread
 
 if __name__ == "__main__":
     log.warning('Application start')
-    kafkaProd = KafkaProducerThread()
-    kafkaConsume = KafkaConsumerThread()
-    mlModelTrainer = MLModelTrainerThread()
+    kafka_prod = KafkaProducerThread()
+    kafka_consume = KafkaConsumerThread()
+    ml_model_trainer = MLModelTrainerThread()
 
     while True:
-        if not kafkaProd.is_thread_alive:
-            kafkaProd.is_thread_alive = True
-            kafkaProd.start()
+        if not kafka_prod.is_thread_alive:
+            kafka_prod.is_thread_alive = True
+            kafka_prod.start()
 
-        if not kafkaConsume.is_thread_alive:
-            kafkaConsume.is_thread_alive = True
-            kafkaConsume.start()
+        if not kafka_consume.is_thread_alive:
+            kafka_consume.is_thread_alive = True
+            kafka_consume.start()
 
-        if not mlModelTrainer.is_thread_alive:
-            mlModelTrainer.is_thread_alive = True
-            mlModelTrainer.start()
+        if not ml_model_trainer.is_thread_alive:
+            ml_model_trainer.is_thread_alive = True
+            ml_model_trainer.start()
 

@@ -5,6 +5,8 @@ from threading import Thread
 from kafka import KafkaProducer
 from json import dumps
 
+from src.app.thread.mlModelTrainerThread import MLModelTrainerThread
+
 
 class KafkaProducerThread(Thread):
     __instance = None
@@ -13,7 +15,7 @@ class KafkaProducerThread(Thread):
         """ Constructor"""
         Thread.__init__(self)
         self.is_thread_alive = thread_status
-        # self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda x: dumps(x).encode('utf-8'))
+        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda x: dumps(x).encode('utf-8'))
 
         if KafkaProducerThread.__instance is None:
             KafkaProducerThread.__instance = self
@@ -29,10 +31,17 @@ class KafkaProducerThread(Thread):
         return KafkaProducerThread.__instance
 
     def run(self):
+        ml_model_trainer = MLModelTrainerThread()
+        print("START: Kafka Test Data Producer Thread")
         while self.is_thread_alive:
             self.is_thread_alive = False
-            # data = {'MYID': 'A20501893'}
-            # self.producer.send("sample", value=data)
-            print("THread -1 ")
+            if ml_model_trainer.test_df is not None:
+                self.input_test_data_to_kafka_stream(ml_model_trainer.test_df)
+
             time.sleep(10)
             self.is_thread_alive = True
+
+    def input_test_data_to_kafka_stream(test_df):
+        print(test_df)
+        #data = {'MYID': 'A20501893'}
+        #self.producer.send("test_data", value=data)
