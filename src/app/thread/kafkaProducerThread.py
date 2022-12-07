@@ -13,7 +13,7 @@ class KafkaProducerThread(Thread):
         """ Constructor"""
         Thread.__init__(self)
         self.is_thread_alive = thread_status
-        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda x: dumps(x).encode('utf-8'))
+        # self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda x: dumps(x).encode('utf-8'))
 
         if KafkaProducerThread.__instance is None:
             KafkaProducerThread.__instance = self
@@ -31,7 +31,8 @@ class KafkaProducerThread(Thread):
     def run(self):
         while self.is_thread_alive:
             self.is_thread_alive = False
-            data = {'MYID': 'A20501893'}
-            self.producer.send("sample", value=data)
+            # data = {'MYID': 'A20501893'}
+            # self.producer.send("sample", value=data)
+            print("THread -1 ")
             time.sleep(10)
             self.is_thread_alive = True

@@ -13,11 +13,11 @@ class KafkaConsumerThread(Thread):
         """ Constructor"""
         Thread.__init__(self)
         self.is_thread_alive = thread_status
-        self.consumer = KafkaConsumer('sample', bootstrap_servers=['localhost:9092'],
-                                      auto_offset_reset='earliest',
-                                      enable_auto_commit=True,
-                                      group_id='my-group',
-                                      value_deserializer=lambda x: loads(x.decode('utf-8')))
+        # self.consumer = KafkaConsumer('sample', bootstrap_servers=['localhost:9092'],
+        #                               auto_offset_reset='earliest',
+        #                               enable_auto_commit=True,
+        #                               group_id='my-group',
+        #                               value_deserializer=lambda x: loads(x.decode('utf-8')))
         if KafkaConsumerThread.__instance is None:
             KafkaConsumerThread.__instance = self
         else:
@@ -34,9 +34,10 @@ class KafkaConsumerThread(Thread):
     def run(self):
         while self.is_thread_alive:
             self.is_thread_alive = False
-            for message in self.consumer:
-                message = message.value
-                for key, value in message.items():
-                    print("Key=", key, ", ", "Value=", value)
+            # for message in self.consumer:
+            #     message = message.value
+            #     for key, value in message.items():
+            #         print("Key=", key, ", ", "Value=", value)
+            print("THREAD - 3")
             time.sleep(5)
             self.is_thread_alive = True
