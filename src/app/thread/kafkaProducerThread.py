@@ -4,8 +4,8 @@ import time
 from threading import Thread
 from kafka import KafkaProducer
 from json import dumps
-
-from src.app.thread.mlModelTrainerThread import MLModelTrainerThread
+import pandas as pd
+from app.thread.mlModelTrainerThread import MLModelTrainerThread
 
 
 class KafkaProducerThread(Thread):
@@ -31,10 +31,11 @@ class KafkaProducerThread(Thread):
         return KafkaProducerThread.__instance
 
     def run(self):
-        ml_model_trainer = MLModelTrainerThread()
+        ml_model_trainer = MLModelTrainerThread.get_instance()
         print("START: Kafka Test Data Producer Thread")
         while self.is_thread_alive:
             self.is_thread_alive = False
+            # print("333333333333333333333333333333333")
             if ml_model_trainer.test_df is not None:
                 self.input_test_data_to_kafka_stream(ml_model_trainer.test_df)
 
@@ -42,13 +43,14 @@ class KafkaProducerThread(Thread):
             self.is_thread_alive = True
 
     def input_test_data_to_kafka_stream(self, test_df):
-        print(test_df)
-        for i in len(test_df):
+        for i in range(test_df.shape[0]):
             sample_df = self.get_random_sample(test_df)
-            data = {"sample": sample_df.to_json(orient = 'columns')}
-            #data = {'MYID': 'A20501893'}
-            self.producer.send("test_data", value=data)
+            data = {"sample": sample_df.to_dict()}
+            self.producer.send('sample', value=data)
+            print("MESSAGE SENT")
+            time.sleep(15)
 
-    def get_random_sample(test_df):
-        return test_df.sample()
+    def get_random_sample(self, test_df):
+        test = test_df.sample(n=1)
+        return test
 
