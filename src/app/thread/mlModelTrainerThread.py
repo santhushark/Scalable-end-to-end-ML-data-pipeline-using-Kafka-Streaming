@@ -3,8 +3,11 @@ from threading import Thread
 from pyspark.sql import *
 from pyspark.ml.feature import VectorAssembler
 import subprocess
-from pyspark.ml.regression import LinearRegression
+# from pyspark.ml.regression import LinearRegression
 import time
+import pickle
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
 
 class MLModelTrainerThread(Thread):
@@ -42,12 +45,20 @@ class MLModelTrainerThread(Thread):
                 spark = self.spark_session
                 df = spark.read.csv("hdfs://ip-172-31-0-181.ec2.internal:8020/dataset/boston.csv", inferSchema=True,
                                 header=True)
-                splits = self.test_train_split(df)
-                train_df = splits[0]
-                self.test_df = splits[1]
-                lr = LinearRegression(featuresCol='features', labelCol='medv', maxIter=10, regParam=0.3, elasticNetParam=0.8)
-                lr_model = lr.fit(train_df)
-                lr_model.write().overwrite().save("/home/hadoop/Scalable-end-to-end-ML-data-pipeline/MLmodel/model")
+                df = df.toPandas()
+                X = df.iloc[:, :13]
+                y = df.iloc[:, 13:14]
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+                model = LinearRegression()
+                model.fit(X_train, y_train)
+                # splits = self.test_train_split(df)
+                # train_df = splits[0]
+                # self.test_df = splits[1]
+                # lr = LinearRegression(featuresCol='features', labelCol='medv', maxIter=10, regParam=0.3, elasticNetParam=0.8)
+                # lr_model = lr.fit(train_df)
+                # model.write().overwrite().save("/home/hadoop/Scalable-end-to-end-ML-data-pipeline/MLmodel/model")
+                filename = 'model.sav'
+                pickle.dump(model, open(filename, 'wb'))
                 if self.is_mv_dataset_within_hdfs_success("/dataset/boston.csv", "/dataset/trained/"+"boston"+str(int(time.time()))+".csv"):
                     print("Model Training: FAILURE")
                 else:
