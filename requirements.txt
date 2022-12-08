@@ -1,0 +1,4 @@
+pandas
+pyspark==2.3.4
+scikit-learn
+kafka-python
