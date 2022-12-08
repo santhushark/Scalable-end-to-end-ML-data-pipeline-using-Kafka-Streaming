@@ -59,6 +59,6 @@ class KafkaConsumerThread(Thread):
             if ml_model_trainer.new_model_available:
                 ml_model_trainer.new_model_available= False
                 self.load_ml_model()
-    #     message = message.value
-    #     for key, value in message.items():
-    #         print("Key=", key, ", ", "Value=", value)
+            message = message.value
+            for key, value in message.items():
+                print("Key=", key, ", ", "Value=", value)

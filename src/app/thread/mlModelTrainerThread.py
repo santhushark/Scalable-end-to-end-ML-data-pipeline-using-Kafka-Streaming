@@ -8,6 +8,7 @@ import time
 import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+import pandas as pd
 
 
 class MLModelTrainerThread(Thread):
@@ -49,6 +50,8 @@ class MLModelTrainerThread(Thread):
                 X = df.iloc[:, :13]
                 y = df.iloc[:, 13:14]
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+
+                self.test_df = X_test
                 model = LinearRegression()
                 model.fit(X_train, y_train)
                 # splits = self.test_train_split(df)

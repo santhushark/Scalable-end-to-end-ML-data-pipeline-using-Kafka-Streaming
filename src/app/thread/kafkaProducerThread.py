@@ -41,7 +41,14 @@ class KafkaProducerThread(Thread):
             time.sleep(10)
             self.is_thread_alive = True
 
-    def input_test_data_to_kafka_stream(test_df):
+    def input_test_data_to_kafka_stream(self, test_df):
         print(test_df)
-        #data = {'MYID': 'A20501893'}
-        #self.producer.send("test_data", value=data)
+        for i in len(test_df):
+            sample_df = self.get_random_sample(test_df)
+            data = {"sample": sample_df.to_json(orient = 'columns')}
+            #data = {'MYID': 'A20501893'}
+            self.producer.send("test_data", value=data)
+
+    def get_random_sample(test_df):
+        return test_df.sample()
+
