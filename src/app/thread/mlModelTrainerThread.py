@@ -2,7 +2,7 @@ import logging as log
 from threading import Thread
 
 # USE below when running on aws emr
-#from pyspark.sql import *
+from pyspark.sql import *
 
 import subprocess
 import time
@@ -45,29 +45,26 @@ class MLModelTrainerThread(Thread):
         print("START: Model Trainer Thread")
 
         # USE below when running on aws emr
-        # self.create_spark_session()
+        self.create_spark_session()
 
         while self.is_thread_alive:
             self.is_thread_alive = False
-
             # USE below when running on aws emr
-            # if self.is_file_exists():
+            if self.is_file_exists():
 
             # USE below when running on local machine
-            if self.is_file_exists_local():
+            #if self.is_file_exists_local():
+                # USE below when running on aws emr
+                spark = self.spark_session
 
                 # USE below when running on aws emr
-                #spark = self.spark_session
-
-                # USE below when running on aws emr
-                # df = spark.read.csv(globals.HDFS_DATASET_LOC, inferSchema=True,
-                #                 header=True)
+                df = spark.read.csv(globals.HDFS_DATASET_LOC, inferSchema=True, header=True)
 
                 # USE below when running on local machine
-                df = pd.read_csv(globals.LOCAL_MACHINE_DATASET_SRC)
+                #df = pd.read_csv(globals.LOCAL_MACHINE_DATASET_SRC)
 
                 # USE below when running on aws emr
-                # df = df.toPandas()
+                df = df.toPandas()
 
                 X = df.iloc[:, :13]
                 y = df.iloc[:, 13:14]
@@ -78,19 +75,18 @@ class MLModelTrainerThread(Thread):
                 model.fit(X_train, y_train)
 
                 # USE below when running on aws emr
-                # filename = globals.AWS_EMR_ML_MODEL_SAVE_LOC
+                filename = globals.AWS_EMR_ML_MODEL_SAVE_LOC
 
                 # USE below when running on local machine
-                filename = globals.ML_MODEL_SAVE_LOC
+                #filename = globals.ML_MODEL_SAVE_LOC
+
                 pickle.dump(model, open(filename, 'wb'))
 
-                # USE below when running on aws emr
-                # if self.is_mv_dataset_within_hdfs_success(globals.HDFS_DATASET_LOC_FOR_CMD, globals.HDFS_DATASET_USED_LOC_FOR_CMD +str(int(time.time()))+".csv"):
 
+                # USE below when running on aws emr
+                if self.is_mv_dataset_within_hdfs_success(globals.HDFS_DATASET_LOC_FOR_CMD, globals.HDFS_DATASET_USED_LOC_FOR_CMD +str(int(time.time()))+".csv"):
                 # USE below when running on local machine
-                if self.is_mv_dataset_within_local_machine_success(globals.LOCAL_MACHINE_DATASET_SRC,
-                                                                   globals.LOCAL_MACHINE_DATASET_USED_DST +
-                                                                   str(int(time.time())) + ".csv"):
+                #if self.is_mv_dataset_within_local_machine_success(globals.LOCAL_MACHINE_DATASET_SRC, globals.LOCAL_MACHINE_DATASET_USED_DST + str(int(time.time())) + ".csv"):
                     print("Model Training: FAILURE")
                 else:
                     self.is_model_trained = True

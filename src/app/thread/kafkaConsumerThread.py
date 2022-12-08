@@ -48,7 +48,7 @@ class KafkaConsumerThread(Thread):
 
     def load_ml_model(self):
         # USE below when running on aws
-        # self.model = LinearRegressionModel.load(globals.HDFS_ML_MODEL_SAVE_LOC)
+        #self.model = pickle.load(open(globals.HDFS_ML_MODEL_SAVE_LOC, "rb"))
 
         # USE below when running on local machine
         self.model = pickle.load(open(globals.ML_MODEL_SAVE_LOC, "rb"))
