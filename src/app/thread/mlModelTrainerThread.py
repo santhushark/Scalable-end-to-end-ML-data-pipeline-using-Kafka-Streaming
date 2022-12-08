@@ -1,6 +1,9 @@
 import logging as log
 from threading import Thread
-from pyspark.sql import *
+
+# USE below when running on aws emr
+#from pyspark.sql import *
+
 import subprocess
 import time
 import pickle
