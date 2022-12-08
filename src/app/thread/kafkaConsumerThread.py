@@ -61,5 +61,5 @@ class KafkaConsumerThread(Thread):
                 self.load_ml_model()
             message = message.value
             for key, value in message.items():
-                print("prediction")
-                print(self.model.predict(pd.DataFrame.from_dict(value)))
+                print("predict for: ", value)
+                print("\nMedian value of owner-occupied homes in 1000$: ", self.model.predict(pd.DataFrame.from_dict(value)),"\n")
