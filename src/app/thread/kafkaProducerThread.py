@@ -4,7 +4,6 @@ import time
 from threading import Thread
 from kafka import KafkaProducer
 from json import dumps
-import pandas as pd
 from app.thread.mlModelTrainerThread import MLModelTrainerThread
 
 
@@ -35,7 +34,6 @@ class KafkaProducerThread(Thread):
         print("START: Kafka Test Data Producer Thread")
         while self.is_thread_alive:
             self.is_thread_alive = False
-            # print("333333333333333333333333333333333")
             if ml_model_trainer.test_df is not None:
                 self.input_test_data_to_kafka_stream(ml_model_trainer.test_df)
 

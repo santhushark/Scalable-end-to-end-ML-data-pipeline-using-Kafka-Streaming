@@ -2,7 +2,6 @@ import logging as log
 from app.thread.kafkaProducerThread import KafkaProducerThread
 from app.thread.kafkaConsumerThread import KafkaConsumerThread
 from app.thread.mlModelTrainerThread import MLModelTrainerThread
-import time
 
 
 if __name__ == "__main__":
@@ -13,17 +12,13 @@ if __name__ == "__main__":
 
     while True:
         if not kafka_prod.is_thread_alive:
-            #print("STarting thread-1")
             kafka_prod.is_thread_alive = True
             kafka_prod.start()
 
         if not kafka_consume.is_thread_alive:
-            #print("STarting thread-2")
             kafka_consume.is_thread_alive = True
             kafka_consume.start()
 
         if not ml_model_trainer.is_thread_alive:
-            #print("STarting thread-2")
             ml_model_trainer.is_thread_alive = True
             ml_model_trainer.start()
-            time.sleep(10)
