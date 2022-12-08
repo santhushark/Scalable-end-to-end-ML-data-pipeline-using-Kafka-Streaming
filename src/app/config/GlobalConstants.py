@@ -17,4 +17,4 @@ AWS_EMR_ML_MODEL_SAVE_LOC = "/home/hadoop/Scalable-end-to-end-ML-data-pipeline/M
 
 HDFS_DATASET_LOC_FOR_CMD = "/dataset/boston.csv"
 
-HDFS_DATASET_USED_LOC_FOR_CMD = "/dataset/used/boston"
+HDFS_DATASET_USED_LOC_FOR_CMD = "/dataset/used_dataset/boston"

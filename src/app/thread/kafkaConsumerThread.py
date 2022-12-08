@@ -48,10 +48,10 @@ class KafkaConsumerThread(Thread):
 
     def load_ml_model(self):
         # USE below when running on aws
-        #self.model = pickle.load(open(globals.HDFS_ML_MODEL_SAVE_LOC, "rb"))
+        self.model = pickle.load(open(globals.HDFS_ML_MODEL_SAVE_LOC, "rb"))
 
         # USE below when running on local machine
-        self.model = pickle.load(open(globals.ML_MODEL_SAVE_LOC, "rb"))
+        #self.model = pickle.load(open(globals.ML_MODEL_SAVE_LOC, "rb"))
 
     def consume_msgs_and_predict(self, ml_model_trainer):
         for message in self.consumer:

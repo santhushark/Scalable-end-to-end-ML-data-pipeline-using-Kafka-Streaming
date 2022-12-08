@@ -110,7 +110,7 @@ class MLModelTrainerThread(Thread):
         return os.path.exists(globals.LOCAL_MACHINE_DATASET_SRC)
 
     def is_mv_dataset_within_hdfs_success(self, src_path, dst_path):
-        proc = subprocess.Popen(["hadoop", "fs", "-mv", "-f", src_path, dst_path])
+        proc = subprocess.Popen(["hadoop", "fs", "-mv", src_path, dst_path])
         proc.communicate()
         if proc.returncode == 0:
             return True
