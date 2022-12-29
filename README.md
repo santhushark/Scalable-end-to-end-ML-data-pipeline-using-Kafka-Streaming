@@ -1,4 +1,4 @@
-# Scalable-end-to-end-ML-data-pipeline
+# Scalable-end-to-end-ML-data-pipeline using Kafka Streaming
 
 Automated the ML workflow by creating a continuous dataflow into ML model using Kafka streams that can then be used for prediction.
 
