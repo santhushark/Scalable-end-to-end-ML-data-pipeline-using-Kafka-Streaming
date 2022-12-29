@@ -1,5 +1,8 @@
 # Scalable-end-to-end-ML-data-pipeline
 
+Automated the ML workflow by creating a continuous dataflow into ML model using Kafka streams that can then be used for prediction.
+
+
 Follow these steps before running the application:
 
 => run the shell script setup.sh. This will install all the required library dependencies.
