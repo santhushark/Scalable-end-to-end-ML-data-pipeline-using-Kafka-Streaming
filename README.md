@@ -1,6 +1,8 @@
 # Scalable-end-to-end-ML-data-pipeline using Kafka Streaming
-
-Automated the ML workflow by creating a continuous dataflow into ML model using Kafka streams that can then be used for prediction.
+    
+    Automated the Machine Learning workflow by creating a continuous dataflow into ML model using Kafka streams that can then be
+used for prediction. The training dataset is there in Hadoop filesystem and then using batch processing the data is processed and the
+model is trained using spark.
 
 
 Follow these steps before running the application:
